@@ -71,7 +71,13 @@ def euclidean_distances(X, Y, squared=False, inverse=True):
     if squared:
         return ssd.cdist(X, Y, 'sqeuclidean')
 
-    XY = ssd.cdist(X, Y)
+    #workaround for Numpy bug that destroys array structure:
+    #     np.double(np.asarray([[5,5]])) == array([[ 5.,  5.]])
+    # but  np.double(np.asarray([[5]])) == 5.0 !!!
+    if X.shape[1] == 1:
+        XY = np.asarray([[np.sqrt(((X[0][0]-Y[0][0])**2))]])
+    else:
+        XY = ssd.cdist(X, Y)
     return  np.divide(1.0, (1.0 + XY)) if inverse else XY
 
 euclidian_distances = euclidean_distances  # both spelling for backward compat

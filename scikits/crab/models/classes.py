@@ -11,6 +11,7 @@ Several Basic Data models.
 import numpy as np
 from .base import BaseDataModel
 from .utils import UserNotFoundError, ItemNotFoundError
+from operator import itemgetter
 import logging
 
 logger = logging.getLogger('crab')
@@ -21,7 +22,7 @@ logger = logging.getLogger('crab')
 class MatrixPreferenceDataModel(BaseDataModel):
     '''
     Matrix with preferences based Data model
-    A DataModel backed by a python dict structured data.
+    A DataModel backed by a NumPy matrix structured data.
     This class expects a simple dictionary where each
     element contains a userID, followed by itemID,
     followed by preference value and optional timestamp.
@@ -756,3 +757,282 @@ class MatrixBooleanPrefDataModel(BaseDataModel):
 
     def __str__(self):
         return unicode(self).encode('utf-8')
+
+###############################################################################
+# DictDataModel
+class DictPreferenceDataModel(BaseDataModel):
+    '''
+    Repository of information about users and their
+    associated preferences for items.
+    
+    A DataModel backed by a python dict structured data.
+    This class expects a simple dictionary where each
+    element contains a userID, followed by itemID,
+    followed by preference value and optional timestamp.
+
+    {userID:{itemID:preference, itemID2:preference2},
+       userID2:{itemID:preference3,itemID4:preference5}}
+
+    Preference value is the parameter that the user simply
+     expresses the degree of preference for an item.
+
+    Parameters
+    ----------
+    dataset dict, shape  = {userID:{itemID:preference, itemID2:preference2},
+              userID2:{itemID:preference3,itemID4:preference5}}
+
+    Examples
+    ---------
+    >>> from scikits.crab.models.classes import DictPreferenceDataModel
+    >>> model = DictPreferenceDataModel({})
+    >>> #empty dataset
+    >>> model.user_ids()
+    array([], dtype=float64)
+    >>> model.item_ids()
+    array([], dtype=float64)
+    >>> movies = {'Marcel Caraciolo': {'Lady in the Water': 2.5, \
+     'Snakes on a Plane': 3.5, \
+     'Just My Luck': 3.0, 'Superman Returns': 3.5, 'You, Me and Dupree': 2.5, \
+     'The Night Listener': 3.0}, \
+     'Paola Pow': {'Lady in the Water': 3.0, 'Snakes on a Plane': 3.5, \
+     'Just My Luck': 1.5, 'Superman Returns': 5.0, 'The Night Listener': 3.0, \
+     'You, Me and Dupree': 3.5}, \
+    'Leopoldo Pires': {'Lady in the Water': 2.5, 'Snakes on a Plane': 3.0, \
+     'Superman Returns': 3.5, 'The Night Listener': 4.0}, \
+    'Lorena Abreu': {'Snakes on a Plane': 3.5, 'Just My Luck': 3.0, \
+     'The Night Listener': 4.5, 'Superman Returns': 4.0, \
+     'You, Me and Dupree': 2.5}, \
+    'Steve Gates': {'Lady in the Water': 3.0, 'Snakes on a Plane': 4.0, \
+     'Just My Luck': 2.0, 'Superman Returns': 3.0, 'The Night Listener': 3.0, \
+     'You, Me and Dupree': 2.0}, \
+    'Sheldom': {'Lady in the Water': 3.0, 'Snakes on a Plane': 4.0, \
+     'The Night Listener': 3.0, 'Superman Returns': 5.0, \
+     'You, Me and Dupree': 3.5}, \
+    'Penny Frewman': {'Snakes on a Plane':4.5,'You, Me and Dupree':1.0, \
+    'Superman Returns':4.0}, \
+    'Maria Gabriela': {}}
+    >>> model = DictPreferenceDataModel(movies)
+    >>> #non-empty dataset
+    >>> model.user_ids()
+    array(['Leopoldo Pires', 'Lorena Abreu', 'Marcel Caraciolo',
+               'Maria Gabriela', 'Paola Pow', 'Penny Frewman', 'Sheldom',
+               'Steve Gates'],
+              dtype='|S16')
+    >>> model.item_ids()
+    array(['Just My Luck', 'Lady in the Water', 'Snakes on a Plane',
+               'Superman Returns', 'The Night Listener', 'You, Me and Dupree'],
+              dtype='|S18')
+    >>> model.preferences_from_user('Sheldom')
+    [('Lady in the Water', 3.0), ('Snakes on a Plane', 4.0), ('Superman Returns', 5.0),
+        ('The Night Listener', 3.0), ('You, Me and Dupree', 3.5)]
+    '''
+
+    def __init__(self, dataset):
+        BaseDataModel.__init__(self)
+        self.dataset = dataset
+        self.build_model()
+
+    def build_model(self):
+        
+        self._user_ids = list()
+        self._item_ids = list()
+        
+        self.prefsForUsers = dict()
+        self.prefsForItems = dict()
+        
+        self.max_pref = -np.inf
+        self.min_pref = np.inf
+        
+        for user_id, preferences in self.dataset.iteritems():
+            
+            if user_id not in self.prefsForUsers:
+                self.prefsForUsers[user_id] = dict()
+                self._user_ids.append(user_id)
+            
+            for (item_id, value) in preferences.iteritems():
+
+                self.prefsForUsers[user_id][item_id] = value
+                
+                if item_id not in self.prefsForItems:
+                    self.prefsForItems[item_id] = list()
+                    self._item_ids.append(item_id)
+                self.prefsForItems[item_id].append((user_id, value))
+                
+                # set max and min preferences
+                if self.max_pref < value:
+                    self.max_pref = value
+                if self.min_pref > value:
+                    self.min_pref = value
+                    
+        self._user_ids = np.array(sorted(self._user_ids))
+        self._item_ids = np.array(sorted(self._item_ids))
+                
+    def __getitem__(self, user_id):
+        return self.preferences_from_user(user_id)
+    
+    def __iter__(self):
+        for user in self.user_ids():
+            yield user, self[user]
+            
+    def user_ids(self):
+        '''
+        Returns
+        -------
+        self.user_ids:  list of shape [n_user_ids]
+                        Return all user ids in the model, in order
+        '''
+        return self._user_ids
+
+    def item_ids(self):
+        '''
+        Returns
+        -------
+        self.item_ids:  list of shape [n_item_ids]
+                    Return all item ids in the model, in order
+        '''
+        return self._item_ids
+    
+    def has_preference_values(self):
+        '''
+        Returns
+        -------
+        True/False:  bool
+                     Return True if this implementation actually
+                     it is not a 'boolean' data model, otherwise returns False.
+        '''
+        return True
+    
+    def maximum_preference_value(self):
+        '''
+        Returns
+        ---------
+        self.max_preference:  float
+                Return the maximum preference value that is possible in the
+                 current problem domain being evaluated.
+        '''
+        return self.max_pref
+
+    def minimum_preference_value(self):
+        '''
+        Returns
+        ---------
+        self.min_preference:  float
+                Returns the minimum preference value that is possible in the
+                current problem domain being evaluated
+        '''
+        return self.min_pref
+        
+    def users_count(self):
+        '''
+        Returns
+        --------
+        n_users:  int
+                  Return total number of users known to the model.
+        '''
+        return self._user_ids.size
+
+    def items_count(self):
+        '''
+        Returns
+        --------
+        n_items:  int
+                  Return total number of items known to the model.
+        '''
+        return self._item_ids.size
+    
+    def preferences_from_user(self, user_id, order_by_id=True):
+        '''
+        Returns
+        -------
+        self.user_preferences :  list [(item_id,preference)]
+         Return user's preferences, ordered by user ID (if order_by_id is True)
+         or by the preference values (if order_by_id is False), as an array.
+
+        '''
+        if user_id not in self.prefsForUsers:
+            raise UserNotFoundError('user_id not found')
+        
+        if order_by_id:
+            return sorted(self.prefsForUsers[user_id].items()) if user_id in self.prefsForUsers else []
+        else:
+            return sorted(self.prefsForUsers[user_id].items(), key=itemgetter(1), reverse=True) if user_id in self.prefsForUsers else []
+    
+    def items_from_user(self, user_id):
+        '''
+        Returns
+        -------
+        items_from_user : Return IDs of items user expresses a preference for
+        '''
+        if user_id not in self.prefsForUsers:
+            raise UserNotFoundError('user_id not found')
+        
+        return sorted(self.prefsForUsers[user_id].keys()) if user_id in self.prefsForUsers else []
+    
+    def preferences_for_item(self, item_id, order_by_id=True):
+        '''
+        Returns
+        -------
+        preferences: list of shape [(item_id,preference)]
+                     Return all existing Preferences expressed for that item,
+        '''
+        if item_id not in self.prefsForItems:
+            raise ItemNotFoundError('item_id not found')
+        
+        if order_by_id:
+            return sorted(self.prefsForItems[item_id]) if item_id in self.prefsForItems else []
+        else:
+            return sorted(self.prefsForItems[item_id], key=itemgetter(1), reverse=True) if item_id in self.prefsForItems else []
+
+    def preference_value(self, user_id, item_id):
+        '''
+        Returns
+        -------
+        preference:  float
+                     Retrieves the preference value for a single user and item.
+        '''
+        
+        if user_id not in self.prefsForUsers:
+            raise UserNotFoundError('user_id not found')
+        
+        if item_id not in self.prefsForItems:
+            raise ItemNotFoundError('item_id not found')
+        
+        userPrefs = self.prefsForUsers[user_id]
+        if item_id not in userPrefs:
+            return np.nan
+        return userPrefs[item_id]
+
+    def set_preference(self, user_id, item_id, value):
+        '''
+        Returns
+        --------
+        self
+            Sets a particular preference (item plus rating) for a user.
+        '''
+        if user_id not in self.prefsForUsers:
+            raise UserNotFoundError('user_id not found')
+        
+        if item_id not in self.prefsForItems:
+            raise ItemNotFoundError('item_id not found')
+        
+        self.prefsForUsers[user_id][item_id] = value
+
+    def remove_preference(self, user_id, item_id):
+        '''
+        Returns
+        --------
+        self
+            Removes a particular preference for a user.
+        '''
+        if user_id not in self.prefsForUsers:
+            raise UserNotFoundError('user_id not found')
+        if item_id not in self.prefsForItems:
+            raise ItemNotFoundError('item_id not found')
+        
+        userPrefs = self.prefsForUsers[user_id]
+        if item_id in userPrefs:
+            del userPrefs[item_id]
+        
+    def __repr__(self):
+        return "<DictPreferenceDataModel (%d by %d)>" % (self.users_count(),
+                        self.items_count())

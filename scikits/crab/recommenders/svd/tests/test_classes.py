@@ -211,14 +211,14 @@ def test_recommend_MatrixFactorBasedRecommender():
         items_selection_strategy=items_strategy,
         n_features=2)
     assert_array_equal(np.array(['Just My Luck', 'You, Me and Dupree']), \
-    recsys.recommend('Leopoldo Pires'))
+    np.sort(recsys.recommend('Leopoldo Pires')))
 
     #Semi Recommendation
     recsys = MatrixFactorBasedRecommender(
         model=boolean_matrix_model,
         items_selection_strategy=items_strategy,
         n_features=2)
-    assert_array_equal(np.array(['You, Me and Dupree']), \
+    assert_array_equal(np.array(['Just My Luck']), \
         recsys.recommend('Leopoldo Pires', 1))
 
     #Empty Recommendation
