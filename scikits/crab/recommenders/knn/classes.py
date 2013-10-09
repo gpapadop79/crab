@@ -17,7 +17,6 @@ can be subclassed).
 from base import ItemRecommender, UserRecommender
 from item_strategies import ItemsNeighborhoodStrategy
 from neighborhood_strategies import NearestNeighborsStrategy
-from operator import itemgetter
 import numpy as np
 
 
@@ -136,7 +135,7 @@ class ItemBasedRecommender(ItemRecommender):
                  Desired number of recommendations (default=None ALL)
 
         '''
-        self._set_params(**params)
+        self.set_params(**params)
 
         candidate_items = self.all_other_items(user_id)
 
@@ -598,7 +597,7 @@ class UserBasedRecommender(UserRecommender):
 
         '''
 
-        self._set_params(**params)
+        self.set_params(**params)
 
         candidate_items = self.all_other_items(user_id, **params)
 
@@ -645,16 +644,19 @@ class UserBasedRecommender(UserRecommender):
         for neighbor_id in nearest_neighbors:
             
             neighbor_similarity = self.similarity.get_similarity(user_id, neighbor_id)[0][0]
-            
-            for (item_id, value) in self.model.preferences_from_user(neighbor_id):
-                
-                if np.isnan(self.model.preference_value(user_id, item_id)):
-                    
-                    # update item score
-                    (score, total) = scores.get(item_id, (0.,0.))
-                    score += neighbor_similarity * value
-                    total += neighbor_similarity
-                    scores[item_id] = (score, total)
+            preferences_from_user = self.model.preferences_from_user(neighbor_id)
+            try:
+                for (item_id, value) in preferences_from_user:
+
+                    if np.isnan(self.model.preference_value(user_id, item_id)):
+
+                        # update item score
+                        (score, total) = scores.get(item_id, (0.,0.))
+                        score += neighbor_similarity * value
+                        total += neighbor_similarity
+                        scores[item_id] = (score, total)
+            except:
+                print(preferences_from_user)
         
         items = [(item_id, score/total) for item_id, (score, total) in scores.items() if ~np.isnan(score)]
         return [item[0] for item in sorted(items, key=lambda x:(x[1], x[0]), reverse=True)][0:how_many]
