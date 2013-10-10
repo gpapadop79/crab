@@ -10,7 +10,7 @@ Base Similarity Models.
 
 import unittest
 
-from ..base import BaseSimilarity
+from scikits.crab.similarities.base import BaseSimilarity
 
 #test classes
 

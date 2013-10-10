@@ -14,9 +14,9 @@ can be subclassed).
 #
 # License: BSD Style.
 
-from base import ItemRecommender, UserRecommender
-from item_strategies import ItemsNeighborhoodStrategy
-from neighborhood_strategies import NearestNeighborsStrategy
+from scikits.crab.recommenders.knn.base import ItemRecommender, UserRecommender
+from scikits.crab.recommenders.knn.item_strategies import ItemsNeighborhoodStrategy
+from scikits.crab.recommenders.knn.neighborhood_strategies import NearestNeighborsStrategy
 import numpy as np
 
 

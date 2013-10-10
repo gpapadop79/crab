@@ -11,21 +11,21 @@ This module contains main implementations that encapsulate
 
 import operator
 import numpy as np
-from base import RecommenderEvaluator
-from metrics import root_mean_square_error
-from metrics import mean_absolute_error
-from metrics import normalized_mean_absolute_error
-from metrics import evaluation_error
-from cross_validation import KFold
-from metrics import precision_score
-from metrics import recall_score
-from metrics import f1_score
-from sampling import SplitSampling
+from scikits.crab.metrics.base import RecommenderEvaluator
+from scikits.crab.metrics.metrics import root_mean_square_error
+from scikits.crab.metrics.metrics import mean_absolute_error
+from scikits.crab.metrics.metrics import normalized_mean_absolute_error
+from scikits.crab.metrics.metrics import evaluation_error
+from scikits.crab.metrics.cross_validation import KFold
+from scikits.crab.metrics.metrics import precision_score
+from scikits.crab.metrics.metrics import recall_score
+from scikits.crab.metrics.metrics import f1_score
+from scikits.crab.metrics.sampling import SplitSampling
 try:
     from sklearn.base import clone
 except ImportError:
     from scikits.learn.base import clone
-from ..models.utils import ItemNotFoundError, UserNotFoundError
+from scikits.crab.models.utils import ItemNotFoundError, UserNotFoundError
 
 
 #Collaborative Filtering Evaluator
@@ -129,15 +129,10 @@ class CfEvaluator(RecommenderEvaluator):
     >>> evaluator = CfEvaluator()
     >>> all_scores = evaluator.evaluate(recsys, permutation=False)
     >>> all_scores
-    {'rmse': 0.23590725429603751, 'recall': 1.0, 'precision': 1.0, \
-    'mae': 0.21812065003607684, 'f1score': 1.0, 'nmae': 0.054530162509019209}
+    {'rmse': 0.23590725429603751, 'recall': 1.0, 'precision': 1.0, 'mae': 0.21812065003607684, 'f1score': 1.0, 'nmae': 0.054530162509019209}
     >>> rmse = evaluator.evaluate_on_split(recsys, metric='rmse', permutation=False)
     >>> rmse
-    ({'error': [{'rmse': 0.35355339059327379}, \
-     {'rmse': 0.97109049202292397},  \
-     {'rmse': 0.39418387598407179}]},  \
-     {'final_error': {'avg': {'rmse': 0.57294258620008975}, \
-     'stdev': {'rmse': 0.28202130565981975}}})
+    ({'error': [{'rmse': 0.35355339059327379}, {'rmse': 0.97109049202292397}, {'rmse': 0.39418387598407179}]}, {'final_error': {'avg': {'rmse': 0.57294258620008975}, 'stdev': {'rmse': 0.28202130565981975}}})
 
     """
 

@@ -4,8 +4,8 @@
 # License: BSD Style.
 
 import numpy as np
-from ..utils.extmath import factorial, combinations
-from ..utils import check_random_state
+from scikits.crab.utils.extmath import factorial, combinations
+from scikits.crab.utils import check_random_state
 from math import ceil
 
 

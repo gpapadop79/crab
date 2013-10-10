@@ -14,7 +14,7 @@ can be subclassed).
 #
 # License: BSD Style.
 
-from ..base import BaseRecommender
+from scikits.crab.base import BaseRecommender
 
 #===========================
 #Memory Based Recommender

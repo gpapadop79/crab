@@ -1,7 +1,7 @@
 import numpy as np
 from numpy.testing import assert_array_equal
-from ....models.classes import MatrixPreferenceDataModel
-from ..neighborhood_strategies import AllNeighborsStrategy, NearestNeighborsStrategy
+from scikits.crab.models.classes import MatrixPreferenceDataModel
+from scikits.crab.recommenders.knn.neighborhood_strategies import AllNeighborsStrategy, NearestNeighborsStrategy
 
 
 movies = {'Marcel Caraciolo': {'Lady in the Water': 2.5, 'Snakes on a Plane': 3.5,

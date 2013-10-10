@@ -40,8 +40,9 @@ import zipfile
 from os.path import dirname
 from os.path import join
 import numpy as np
-from base import Bunch
+
 import csv
+from scikits.crab.datasets.base import Bunch
 
 logger = logging.getLogger(__name__)
 
@@ -75,7 +76,7 @@ def download_book_crossings(target_dir):
     return archives
 
 
-def load_bookcrossings(data_home=None, download_if_missing=True,
+def load_bookcrossings(data_home=None, download_if_missing=False,
                      implicit=False):
     """
     Load the filenames of the Book Crossings dataset
@@ -97,7 +98,7 @@ def load_bookcrossings(data_home=None, download_if_missing=True,
     >>> from os.path import join
     >>> from os.path import dirname
     >>> from scikits.crab.datasets.book_crossing import load_bookcrossings
-    >>> data_home = join(dirname(__file__), 'scikits/crab/datasets/tests/data/')
+    >>> data_home = join(dirname(__file__), 'tests/data')
     >>> books = load_bookcrossings(data_home)
     >>> len(books.data)
     26

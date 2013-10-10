@@ -1,11 +1,11 @@
 import numpy as np
 from numpy.testing import assert_array_almost_equal, assert_array_equal
 from nose.tools import assert_raises, assert_equals
-from ..basic_similarities import UserSimilarity, ItemSimilarity, find_common_elements
-from ...metrics.pairwise import cosine_distances, \
+from scikits.crab.similarities.basic_similarities import UserSimilarity, ItemSimilarity, find_common_elements
+from scikits.crab.metrics.pairwise import cosine_distances, \
     pearson_correlation, euclidean_distances, manhattan_distances, jaccard_coefficient, \
     sorensen_coefficient, loglikehood_coefficient
-from ...models.classes import  MatrixPreferenceDataModel, \
+from scikits.crab.models.classes import  MatrixPreferenceDataModel, \
      MatrixBooleanPrefDataModel
 
 #Simple Movies DataSet

@@ -4,7 +4,7 @@ from numpy.testing import assert_array_almost_equal
 
 from nose.tools import assert_raises
 
-from ..pairwise import euclidean_distances, pearson_correlation, \
+from scikits.crab.metrics.pairwise import euclidean_distances, pearson_correlation, \
                        jaccard_coefficient, manhattan_distances,  \
                        sorensen_coefficient, tanimoto_coefficient, \
                        cosine_distances, \

@@ -51,7 +51,7 @@ def euclidean_distances(X, Y, squared=False, inverse=True):
            [ 0.29429806,  1.        ]])
     >>> # get distance to origin
     >>> X = [[1.0, 0.0],[1.0,1.0]]
-    >>> euclidean_distances(X, [[0.0, 0.0]])
+    >>> euclidean_distances(X, [[0.0, 0.0]])    #doctest: +NORMALIZE_WHITESPACE
     array([[ 0.5       ],
           [ 0.41421356]])
 
@@ -108,10 +108,10 @@ def pearson_correlation(X, Y):
     >>> from scikits.crab.metrics.pairwise import pearson_correlation
     >>> X = [[2.5, 3.5, 3.0, 3.5, 2.5, 3.0],[2.5, 3.5, 3.0, 3.5, 2.5, 3.0]]
     >>> # distance between rows of X
-    >>> pearson_correlation(X, X)
+    >>> pearson_correlation(X, X) #doctest: +NORMALIZE_WHITESPACE
     array([[ 1., 1.],
            [ 1., 1.]])
-    >>> pearson_correlation(X, [[3.0, 3.5, 1.5, 5.0, 3.5,3.0]])
+    >>> pearson_correlation(X, [[3.0, 3.5, 1.5, 5.0, 3.5,3.0]]) #doctest: +NORMALIZE_WHITESPACE
     array([[ 0.39605902],
                [ 0.39605902]])
     """
@@ -220,7 +220,7 @@ def manhattan_distances(X, Y):
     >>> manhattan_distances(X, X)
     array([[ 1.,  1.],
            [ 1.,  1.]])
-    >>> manhattan_distances(X, [[3.0, 3.5, 1.5, 5.0, 3.5,3.0]])
+    >>> manhattan_distances(X, [[3.0, 3.5, 1.5, 5.0, 3.5,3.0]]) #doctest: +NORMALIZE_WHITESPACE
     array([[ 0.25],
           [ 0.25]])
     """
@@ -271,10 +271,10 @@ def sorensen_coefficient(X, Y):
     >>> from scikits.crab.metrics.pairwise import sorensen_coefficient
     >>> X = [['a', 'b', 'c', 'd'],['e', 'f','g']]
     >>> # distance between rows of X
-    >>> sorensen_coefficient(X, X)
+    >>> sorensen_coefficient(X, X) #doctest: +NORMALIZE_WHITESPACE
     array([[ 1.,  0.],
           [ 0.,  1.]])
-    >>> sorensen_coefficient(X, [['a', 'b', 'c', 'k']])
+    >>> sorensen_coefficient(X, [['a', 'b', 'c', 'k']]) #doctest: +NORMALIZE_WHITESPACE
     array([[ 0.75], [ 0.  ]])
 
     """
@@ -392,7 +392,7 @@ def cosine_distances(X, Y):
     >>> from scikits.crab.metrics.pairwise  import cosine_distances
     >>> X = [[2.5, 3.5, 3.0, 3.5, 2.5, 3.0],[2.5, 3.5, 3.0, 3.5, 2.5, 3.0]]
     >>> # distance between rows of X
-    >>> cosine_distances(X, X)
+    >>> cosine_distances(X, X) #doctest: +NORMALIZE_WHITESPACE
     array([[ 1.,  1.],
           [ 1.,  1.]])
     >>> cosine_distances(X, [[3.0, 3.5, 1.5, 5.0, 3.5,3.0]])
@@ -512,11 +512,11 @@ def loglikehood_coefficient(n_items, X, Y):
     >>> X = [['a', 'b', 'c', 'd'],  ['e', 'f','g', 'h']]
     >>> # distance between rows of X
     >>> n_items = 7
-    >>> loglikehood_coefficient(n_items,X, X)
+    >>> loglikehood_coefficient(n_items,X, X) #doctest: +NORMALIZE_WHITESPACE
     array([[ 1.,  0.],
           [ 0.,  1.]])
     >>> n_items = 8
-    >>> loglikehood_coefficient(n_items, X, [['a', 'b', 'c', 'k']])
+    >>> loglikehood_coefficient(n_items, X, [['a', 'b', 'c', 'k']]) #doctest: +NORMALIZE_WHITESPACE
     array([[ 0.67668852],
           [ 0.        ]])
 

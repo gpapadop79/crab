@@ -11,7 +11,7 @@ implement your own strategy.
 #
 # License: BSD Style.
 
-from base import BaseCandidateItemsStrategy
+from scikits.crab.recommenders.knn.base import BaseCandidateItemsStrategy
 import numpy as np
 
 

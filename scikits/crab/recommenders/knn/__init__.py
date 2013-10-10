@@ -1,1 +1,1 @@
-from .classes import ItemBasedRecommender, UserBasedRecommender
+from scikits.crab.recommenders.knn.classes import ItemBasedRecommender, UserBasedRecommender

@@ -1,10 +1,10 @@
 import numpy as np
 from numpy.testing import assert_array_equal
 from nose.tools import assert_equals, assert_almost_equals
-from ...knn.item_strategies import AllPossibleItemsStrategy, ItemsNeighborhoodStrategy
-from ....models.classes import  MatrixPreferenceDataModel, \
+from scikits.crab.recommenders.knn.item_strategies import AllPossibleItemsStrategy, ItemsNeighborhoodStrategy
+from scikits.crab.models.classes import  MatrixPreferenceDataModel, \
      MatrixBooleanPrefDataModel
-from ..classes import MatrixFactorBasedRecommender
+from scikits.crab.recommenders.svd.classes import MatrixFactorBasedRecommender
 
 
 movies = {'Marcel Caraciolo': {'Lady in the Water': 2.5, 'Snakes on a Plane': 3.5,

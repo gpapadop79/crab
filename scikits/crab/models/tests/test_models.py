@@ -2,10 +2,10 @@ import numpy as np
 from numpy.testing import assert_array_equal
 from nose.tools import assert_raises, assert_equals
 
-from ..classes import  MatrixPreferenceDataModel,  \
+from scikits.crab.models.classes import  MatrixPreferenceDataModel,  \
              MatrixBooleanPrefDataModel, DictPreferenceDataModel
-from ..utils import UserNotFoundError, ItemNotFoundError
-from ...datasets import load_sample_songs
+from scikits.crab.models.utils import UserNotFoundError, ItemNotFoundError
+from scikits.crab.datasets import load_sample_songs
 
 
 #Simple Movies DataSet

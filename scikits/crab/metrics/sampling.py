@@ -4,7 +4,7 @@
 # License: BSD Style.
 
 import numpy as np
-from ..utils import check_random_state
+from scikits.crab.utils import check_random_state
 from math import ceil
 
 

@@ -9,8 +9,8 @@ Several Basic Data models.
 
 
 import numpy as np
-from .base import BaseDataModel
-from .utils import UserNotFoundError, ItemNotFoundError
+from scikits.crab.models.base import BaseDataModel
+from scikits.crab.models.utils import UserNotFoundError, ItemNotFoundError
 from operator import itemgetter
 import logging
 
@@ -70,16 +70,16 @@ class MatrixPreferenceDataModel(BaseDataModel):
     'Maria Gabriela': {}}
     >>> model = MatrixPreferenceDataModel(movies)
     >>> #non-empty dataset
-    >>> model.user_ids()
+    >>> model.user_ids() #doctest: +NORMALIZE_WHITESPACE
     array(['Leopoldo Pires', 'Lorena Abreu', 'Marcel Caraciolo',
                'Maria Gabriela', 'Paola Pow', 'Penny Frewman', 'Sheldom',
                'Steve Gates'],
               dtype='|S16')
-    >>> model.item_ids()
+    >>> model.item_ids() #doctest: +NORMALIZE_WHITESPACE
     array(['Just My Luck', 'Lady in the Water', 'Snakes on a Plane',
                'Superman Returns', 'The Night Listener', 'You, Me and Dupree'],
               dtype='|S18')
-    >>> model.preferences_from_user('Sheldom')
+    >>> model.preferences_from_user('Sheldom') #doctest: +NORMALIZE_WHITESPACE
     [('Lady in the Water', 3.0), ('Snakes on a Plane', 4.0), ('Superman Returns', 5.0),
         ('The Night Listener', 3.0), ('You, Me and Dupree', 3.5)]
     '''
@@ -441,16 +441,16 @@ class MatrixBooleanPrefDataModel(BaseDataModel):
     'Maria Gabriela': {}}
     >>> model = MatrixBooleanPrefDataModel(movies)
     >>> #non-empty dataset
-    >>> model.user_ids()
+    >>> model.user_ids() #doctest: +NORMALIZE_WHITESPACE
     array(['Leopoldo Pires', 'Lorena Abreu', 'Marcel Caraciolo',
                'Maria Gabriela', 'Paola Pow', 'Penny Frewman', 'Sheldom',
                'Steve Gates'],
               dtype='|S16')
-    >>> model.item_ids()
+    >>> model.item_ids() #doctest: +NORMALIZE_WHITESPACE
     array(['Just My Luck', 'Lady in the Water', 'Snakes on a Plane',
                'Superman Returns', 'The Night Listener', 'You, Me and Dupree'],
               dtype='|S18')
-    >>> model.preferences_from_user('Sheldom')
+    >>> model.preferences_from_user('Sheldom') #doctest: +NORMALIZE_WHITESPACE
     array(['Lady in the Water', 'Snakes on a Plane', 'Superman Returns',
            'The Night Listener', 'You, Me and Dupree'],
           dtype='|S18')
@@ -813,16 +813,16 @@ class DictPreferenceDataModel(BaseDataModel):
     'Maria Gabriela': {}}
     >>> model = DictPreferenceDataModel(movies)
     >>> #non-empty dataset
-    >>> model.user_ids()
+    >>> model.user_ids() #doctest: +NORMALIZE_WHITESPACE
     array(['Leopoldo Pires', 'Lorena Abreu', 'Marcel Caraciolo',
                'Maria Gabriela', 'Paola Pow', 'Penny Frewman', 'Sheldom',
                'Steve Gates'],
               dtype='|S16')
-    >>> model.item_ids()
+    >>> model.item_ids() #doctest: +NORMALIZE_WHITESPACE
     array(['Just My Luck', 'Lady in the Water', 'Snakes on a Plane',
                'Superman Returns', 'The Night Listener', 'You, Me and Dupree'],
               dtype='|S18')
-    >>> model.preferences_from_user('Sheldom')
+    >>> model.preferences_from_user('Sheldom') #doctest: +NORMALIZE_WHITESPACE
     [('Lady in the Water', 3.0), ('Snakes on a Plane', 4.0), ('Superman Returns', 5.0),
         ('The Night Listener', 3.0), ('You, Me and Dupree', 3.5)]
     '''
