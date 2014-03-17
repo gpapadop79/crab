@@ -1,4 +1,15 @@
-Quick notes.
+I was preparing a [tutorial about RecSys](https://course.ie.cuhk.edu.hk/~engg4030/tutorial/tutorial9/).
+After some search, it seems that `crab` is the most commonly used.
+When running it on my data set (LegCoHK), the prediction of neighbourhood model is extremely slow.
+Then I did some optimization to speed up by 30x.
+
+Feel free to use this fork **at your own risk**.
+The best way to checkout what I did is to follow the commits.
+Profile data and codes are checked in simultaneous.
+
+Quick notes are followed.
+
+[![Analytics](https://ga-beacon.appspot.com/UA-37311363-6/hupili/default)](https://github.com/igrigorik/ga-beacon)
 
 ```
 $python benchmark.py
