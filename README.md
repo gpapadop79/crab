@@ -31,6 +31,18 @@ Profile: (see this commit)
         3    0.136    0.045    0.252    0.084 shelve.py:117(__getitem__)
 ```
 
+Profile: (see this commit)
+
+```
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+    11387    0.178    0.000    0.178    0.000 {numpy.core.multiarray.array}
+     1096    0.154    0.000    0.520    0.000 basic_similarities.py:99(get_similarity)
+        3    0.114    0.038    0.114    0.038 {built-in method load}
+        3    0.080    0.027    0.194    0.065 shelve.py:117(__getitem__)
+        1    0.059    0.059    0.087    0.087 classes.py:100(build_model)
+     1096    0.051    0.000    0.170    0.000 distance.py:1712(cdist)
+```
+
 ---------
 
 # Crab - A Recommendation Engine library for Python

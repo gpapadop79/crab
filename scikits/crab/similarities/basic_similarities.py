@@ -100,12 +100,20 @@ class UserSimilarity(BaseSimilarity):
         #TODO:
         #    Repeated evaluation of a pair.
         #    Can make a cache to save some computation.
-        source_preferences = self.model.preferences_from_user(source_id)
-        target_preferences = self.model.preferences_from_user(target_id)
 
+        # == True: meaning that the model is not a Boolean matrix
         if self.model.has_preference_values():
-            source_preferences, target_preferences = \
-                find_common_elements(source_preferences, target_preferences)
+            #source_preferences, target_preferences = \
+            #    find_common_elements(source_preferences, target_preferences)
+            # find_common_elements returns values without keys
+            source_preferences = self.model.dataset[source_id]
+            target_preferences = self.model.dataset[target_id]
+            intersection = set(source_preferences.keys()) & set(target_preferences.keys())
+            source_preferences = np.array([source_preferences[key] for key in intersection])
+            target_preferences = np.array([target_preferences[key] for key in intersection])
+        else:
+            source_preferences = self.model.preferences_from_user(source_id)
+            target_preferences = self.model.preferences_from_user(target_id)
 
         if source_preferences.ndim == 1 and target_preferences.ndim == 1:
             source_preferences = np.asarray([source_preferences])
