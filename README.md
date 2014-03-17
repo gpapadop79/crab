@@ -20,6 +20,17 @@ ncalls  tottime  percall  cumtime  percall filename:lineno(function)
  1099    0.262    0.000    0.262    0.000 {method 'sort' of 'numpy.ndarray' objects}
 ```
 
+Profile: (see this commit)
+
+```
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+     1096    2.329    0.002    3.320    0.003 basic_similarities.py:16(find_common_elements)
+     2206    0.357    0.000    0.358    0.000 {sorted}
+     1099    0.254    0.000    0.254    0.000 {method 'sort' of 'numpy.ndarray' objects}
+    11387    0.231    0.000    0.231    0.000 {numpy.core.multiarray.array}
+        3    0.136    0.045    0.252    0.084 shelve.py:117(__getitem__)
+```
+
 ---------
 
 # Crab - A Recommendation Engine library for Python

@@ -189,10 +189,12 @@ class MatrixPreferenceDataModel(BaseDataModel):
         '''
         preferences = self.preference_values_from_user(user_id)
 
-        #think in a way to return as numpy array and how to remove the nan values efficiently.
-        data = zip(self._item_ids, preferences.flatten())
+        ##think in a way to return as numpy array and how to remove the nan values efficiently.
+        #data = zip(self._item_ids, preferences.flatten())
+        #filtered_data = [(item_id, preference)  for item_id, preference in data if not np.isnan(preference)]
 
-        filtered_data = [(item_id, preference)  for item_id, preference in data if not np.isnan(preference)]
+        #filtered_data = [(item_id, self.dataset[user_id][item_id]) for item_id in self._item_ids]
+        filtered_data = self.dataset[user_id].items()
 
         if order_by_id:
             return filtered_data
