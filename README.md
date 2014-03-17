@@ -1,3 +1,14 @@
+Quick notes.
+
+```
+$python benchmark.py
+Time spent for training: 7.86781311035e-06
+Time spent for testing: 10.1878209114
+```
+
+
+---------
+
 # Crab - A Recommendation Engine library for Python
 
   Crab is a ﬂexible, fast recommender engine for Python that integrates classic information ﬁltering recom- 
