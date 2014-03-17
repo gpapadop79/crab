@@ -58,5 +58,5 @@ def evaluate(recommender,
     evaluation['rmse'] = np.sqrt(evaluation['mse'])
     # This should not be part of evaluation function
     # Put it here for smoking test regarding preferences_from_user()
-    evaluation['LEE Cheuk-yan'] = recommender.model.preferences_from_user('LEE Cheuk-yan')
+    evaluation['LEE Cheuk-yan'] = set(recommender.model.preferences_from_user('LEE Cheuk-yan'))
     return evaluation
