@@ -513,6 +513,10 @@ class UserBasedRecommender(UserRecommender):
         item. If a preference cannot be estimated, returns None.
         '''
 
+        #TODO:
+        #    The fundamental routine for prediction.
+        #    May need optimization.
+
         preference = self.model.preference_value(user_id, item_id)
         if not np.isnan(preference):
             return preference
@@ -575,6 +579,8 @@ class UserBasedRecommender(UserRecommender):
             Desired number of most similar users to find (default=None ALL)
         '''
         old_how_many = self.similarity.num_best
+        #TODO:
+        #    Looks like a hack. Needs elaboration???
         #+1 since it returns the identity.
         self.similarity.num_best = how_many + 1 \
                     if how_many is not None else None

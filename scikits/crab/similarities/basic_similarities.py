@@ -44,7 +44,7 @@ class UserSimilarity(BaseSimilarity):
          Defines the data model where data is fetched.
     `distance`: Function
          Pairwise Function between two vectors.
-     `num_best`: int
+    `num_best`: int
          If it is left unspecified, similarity queries return a full list (one
          float for every item in the model, including the query item).
 
@@ -97,6 +97,9 @@ class UserSimilarity(BaseSimilarity):
         BaseSimilarity.__init__(self, model, distance, num_best)
 
     def get_similarity(self, source_id, target_id):
+        #TODO:
+        #    Repeated evaluation of a pair.
+        #    Can make a cache to save some computation.
         source_preferences = self.model.preferences_from_user(source_id)
         target_preferences = self.model.preferences_from_user(target_id)
 
@@ -108,6 +111,10 @@ class UserSimilarity(BaseSimilarity):
             source_preferences = np.asarray([source_preferences])
             target_preferences = np.asarray([target_preferences])
 
+        #TODO:
+        #    Special case?
+        #    The Similarity class should accept `model` as the parameter
+        #    so that they can adjust to this situation.
         if self.distance == loglikehood_coefficient:
             return self.distance(self.model.items_count(), \
                 source_preferences, target_preferences) \
@@ -120,6 +127,8 @@ class UserSimilarity(BaseSimilarity):
                 and not target_preferences.shape[1] == 0 else np.array([[np.nan]])
 
     def get_similarities(self, source_id):
+        #TODO:
+        #    cache
         return[(other_id, self.get_similarity(source_id, other_id))  for other_id, v in self.model]
 
     def __iter__(self):

@@ -6,6 +6,19 @@ Time spent for training: 7.86781311035e-06
 Time spent for testing: 10.1878209114
 ```
 
+The profiling result:
+
+```
+ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+ 2882    5.694    0.002    6.451    0.002 scikits/crab/models/classes.py:175(preferences_from_user)
+ 1096    1.556    0.001    2.656    0.002 scikits/crab/similarities/basic_similarities.py:16(find_common_elements)
+ 4008    0.705    0.000    0.705    0.000 {zip}
+ 1096    0.429    0.000    8.201    0.007 scikits/crab/similarities/basic_similarities.py:99(get_similarity)
+ 2206    0.361    0.000    0.362    0.000 {sorted}
+    1    0.309    0.309    2.824    2.824 /usr/local/Cellar/python/2.7.6/Frameworks/Python.framework/Versions/2.7/lib/python2.7/site-packages/pandas/__init__.py:3(<module>)
+11419    0.308    0.000    0.308    0.000 {numpy.core.multiarray.array}
+ 1099    0.262    0.000    0.262    0.000 {method 'sort' of 'numpy.ndarray' objects}
+```
 
 ---------
 

@@ -51,8 +51,12 @@ def evaluate(recommender,
                           for (d, rr, rp, rpa) in
                           zip(test_data_points, r_real, r_predict, r_predict_activated)],
                          columns = ['user', 'item', 'r_real', 'r_predict', 'r_predict_activated'])
+        evaluation['test_data_points_with_prediction'] = evaluation['test_data_points_with_prediction'].to_dict()
     evaluation['n_test_data_points'] = len(test_data_points)
     evaluation['se'] = float(np.sum((r_predict_activated - r_real) ** 2))
     evaluation['mse'] = evaluation['se'] / len(test_data_points)
     evaluation['rmse'] = np.sqrt(evaluation['mse'])
+    # This should not be part of evaluation function
+    # Put it here for smoking test regarding preferences_from_user()
+    evaluation['LEE Cheuk-yan'] = recommender.model.preferences_from_user('LEE Cheuk-yan')
     return evaluation
