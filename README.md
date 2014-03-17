@@ -43,6 +43,17 @@ Profile: (see this commit)
      1096    0.051    0.000    0.170    0.000 distance.py:1712(cdist)
 ```
 
+Enlarge test data set: (see this commit)
+
+```
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+   109637    2.010    0.000    2.010    0.000 {numpy.core.multiarray.array}
+    10885    1.709    0.000    5.668    0.001 basic_similarities.py:99(get_similarity)
+    10885    0.523    0.000    1.721    0.000 distance.py:1712(cdist)
+    44040    0.330    0.000    0.330    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+    21770    0.231    0.000    0.512    0.000 _methods.py:49(_mean)
+```
+
 ---------
 
 # Crab - A Recommendation Engine library for Python

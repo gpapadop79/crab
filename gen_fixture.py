@@ -14,7 +14,7 @@ similarity = UserSimilarity(model, pearson_correlation, 5)
 from scikits.crab.recommenders.knn import UserBasedRecommender
 
 recommender = UserBasedRecommender(model, similarity, with_preference=True)
-e = evaluate(recommender, test_data_points[:10], activation_function=trivial_activation, return_data_points=True)
+e = evaluate(recommender, test_data_points[:100], activation_function=trivial_activation, return_data_points=True)
 
 s['evaluation'] = e
 s.close()

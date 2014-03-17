@@ -19,7 +19,7 @@ _end_time = time.time()
 print 'Time spent for training:', _end_time - _start_time
 
 _start_time = time.time()
-e = evaluate(recommender, test_data_points[:10], activation_function=trivial_activation, return_data_points=True)
+e = evaluate(recommender, test_data_points[:100], activation_function=trivial_activation, return_data_points=True)
 _end_time = time.time()
 print 'Time spent for testing:', _end_time - _start_time
 
