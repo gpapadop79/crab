@@ -95,11 +95,21 @@ class UserSimilarity(BaseSimilarity):
 
     def __init__(self, model, distance, num_best=None):
         BaseSimilarity.__init__(self, model, distance, num_best)
+        self.cache_similarity = {}
 
     def get_similarity(self, source_id, target_id):
         #TODO:
         #    Repeated evaluation of a pair.
         #    Can make a cache to save some computation.
+
+        #if source_id < target_id:
+        #    t = (source_id, target_id)
+        #else:
+        #    t = (target_id, source_id)
+
+        t = (source_id, target_id)
+        if t in self.cache_similarity:
+            return self.cache_similarity[t]
 
         # == True: meaning that the model is not a Boolean matrix
         if self.model.has_preference_values():
@@ -130,9 +140,11 @@ class UserSimilarity(BaseSimilarity):
                 not target_preferences.shape[1] == 0 else np.array([[np.nan]])
 
         #evaluate the similarity between the two users vectors.
-        return self.distance(source_preferences, target_preferences) \
+        d = self.distance(source_preferences, target_preferences) \
             if not source_preferences.shape[1] == 0 \
                 and not target_preferences.shape[1] == 0 else np.array([[np.nan]])
+        self.cache_similarity[t] = d
+        return d
 
     def get_similarities(self, source_id):
         #TODO:

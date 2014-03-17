@@ -54,6 +54,17 @@ Enlarge test data set: (see this commit)
     21770    0.231    0.000    0.512    0.000 _methods.py:49(_mean)
 ```
 
+Add similarity cache:
+
+```
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+    59237    1.015    0.000    1.015    0.000 {numpy.core.multiarray.array}
+    10885    0.888    0.000    2.933    0.000 basic_similarities.py:100(get_similarity)
+     5845    0.278    0.000    0.916    0.000 distance.py:1712(cdist)
+     6901    0.178    0.000    0.191    0.000 classes.py:162(preference_values_from_user)
+    23880    0.176    0.000    0.176    0.000 {method 'reduce' of 'numpy.ufunc' objects}
+```
+
 ---------
 
 # Crab - A Recommendation Engine library for Python
