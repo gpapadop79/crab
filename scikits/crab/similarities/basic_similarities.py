@@ -116,11 +116,25 @@ class UserSimilarity(BaseSimilarity):
             #source_preferences, target_preferences = \
             #    find_common_elements(source_preferences, target_preferences)
             # find_common_elements returns values without keys
-            source_preferences = self.model.dataset[source_id]
-            target_preferences = self.model.dataset[target_id]
-            intersection = set(source_preferences.keys()) & set(target_preferences.keys())
-            source_preferences = np.array([source_preferences[key] for key in intersection])
-            target_preferences = np.array([target_preferences[key] for key in intersection])
+            d_source_preferences = self.model.dataset[source_id]
+            d_target_preferences = self.model.dataset[target_id]
+            intersection = set(d_source_preferences.keys()) & set(d_target_preferences.keys())
+
+            # Array from generator
+            # (Best of the three)
+            source_preferences = np.fromiter((d_source_preferences[key] for key in intersection), int, len(intersection))
+            target_preferences = np.fromiter((d_target_preferences[key] for key in intersection), int, len(intersection))
+
+            # List comprehension
+            #source_preferences = np.array([d_source_preferences[key] for key in intersection])
+            #target_preferences = np.array([d_target_preferences[key] for key in intersection])
+
+            # Manual space allocation and look up
+            #source_preferences = np.zeros(len(intersection))
+            #target_preferences = np.zeros(len(intersection))
+            #for (i, key) in enumerate(intersection):
+            #    source_preferences[i] = d_source_preferences[key]
+            #    target_preferences[i] = d_target_preferences[key]
         else:
             source_preferences = self.model.preferences_from_user(source_id)
             target_preferences = self.model.preferences_from_user(target_id)

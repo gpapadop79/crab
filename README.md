@@ -76,6 +76,19 @@ Add similarity cache:
     23880    0.176    0.000    0.176    0.000 {method 'reduce' of 'numpy.ufunc' objects}
 ```
 
+Tune common elements lookup:
+
+```
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+    10885    0.522    0.000    3.191    0.000 basic_similarities.py:100(get_similarity)
+    47547    0.454    0.000    0.454    0.000 {numpy.core.multiarray.array}
+    11690    0.440    0.000    1.161    0.000 {numpy.core.multiarray.fromiter}
+  1884189    0.377    0.000    0.377    0.000 basic_similarities.py:126(<genexpr>)
+  1884189    0.347    0.000    0.347    0.000 basic_similarities.py:125(<genexpr>)
+     5845    0.286    0.000    0.930    0.000 distance.py:1712(cdist)
+     6901    0.182    0.000    0.195    0.000 classes.py:162(preference_values_from_user)
+```
+
 ---------
 
 # Crab - A Recommendation Engine library for Python
