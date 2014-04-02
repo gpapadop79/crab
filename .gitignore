@@ -1,6 +1,7 @@
 *.pyc
 *.tmproj
 *.swp
+build/*
 <<<<<<< HEAD
 *~
 .#*

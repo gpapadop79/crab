@@ -135,7 +135,7 @@ class ItemBasedRecommender(ItemRecommender):
                  Desired number of recommendations (default=None ALL)
 
         '''
-        self._set_params(**params)
+        # self._set_params(**params)
 
         candidate_items = self.all_other_items(user_id)
 
