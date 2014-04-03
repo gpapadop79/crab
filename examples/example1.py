@@ -3,8 +3,6 @@
 #   http://muricoca.github.io/crab/tutorial.html#introducing-recommendation-engines
 #
 
-import sys
-
 from scikits.crab import datasets
 from scikits.crab.models import MatrixPreferenceDataModel
 from scikits.crab.metrics import pearson_correlation
