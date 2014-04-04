@@ -214,3 +214,37 @@ def load_sample_movies():
 
     return Bunch(data=data_songs, item_ids=data_titles,
                  user_ids=data_users, DESCR=fdescr.read())
+
+def load_sample_data():
+    base_dir = join(dirname(__file__), 'data/')
+
+    #Read data
+    data_m = np.loadtxt(base_dir + 'sample_data.csv',
+                delimiter=',', dtype=str)
+    item_ids = []
+    user_ids = []
+    data_songs = {}
+    for user_id, item_id, rating in data_m:
+        if user_id not in user_ids:
+            user_ids.append(user_id)
+        if item_id not in item_ids:
+            item_ids.append(item_id)
+        u_ix = user_ids.index(user_id) + 1
+        i_ix = item_ids.index(item_id) + 1
+        data_songs.setdefault(u_ix, {})
+        data_songs[u_ix][i_ix] = float(rating)
+
+    data_t = []
+    for no, item_id in enumerate(item_ids):
+        data_t.append((no + 1, item_id))
+    data_titles = dict(data_t)
+
+    data_u = []
+    for no, user_id in enumerate(user_ids):
+        data_u.append((no + 1, user_id))
+    data_users = dict(data_u)
+
+    fdescr = open(dirname(__file__) + '/descr/sample_data.rst')
+
+    return Bunch(data=data_songs, item_ids=data_titles,
+                 user_ids=data_users, DESCR=fdescr.read())
