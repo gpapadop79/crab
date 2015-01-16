@@ -84,8 +84,8 @@ class SplitSampling(object):
             return train_mask, test_mask
 
     def __repr__(self):
-        return ('%s(%d, evaluation_fraction=%s, indices=%s, '
-                'random_state=%d)' % (
+        return ('{0}({1}, evaluation_fraction={2}, indices={3}, '
+                'random_state={4})'.format(
                     self.__class__.__name__,
                     self.n,
                     str(self.evaluation_fraction),
