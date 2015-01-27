@@ -5,6 +5,10 @@
   to provide a rich set of components from which you can construct a customized recommender system from a 
   set of algorithms.
 
+  In this fork, I (gabrielspmoreira) have done the following changes:
+  * Fixed some issues for compatibility with scikit.learn last version (BaseEstimator class deprecated import (scikits.learn.base) and _set_param renamed method)
+  * Implemented a hybrid method to combine Collaborative Filtering with Global Baseline estimates (based on users and items average preference), inspired on [Implementing Collaborative Filtering class](https://class.coursera.org/mmds-001/lecture/95) from [Coursera Mining Massive Datasets course](https://www.coursera.org/course/mmds).
+
 ## Usage
 
   For Usage and Instructions checkout the [Crab Wiki](https://github.com/muricoca/crab/wiki)
@@ -14,7 +18,7 @@
   The project was started in 2010  by Marcel Caraciolo as a M.S.C related  project, and since then many people interested joined to help in the project.
   It is currently maintained by a team of volunteers, members of the Muriçoca Labs.
 
-## Authors
+## Original Authors
   
   Marcel Caraciolo (marcel@muricoca.com)
 
