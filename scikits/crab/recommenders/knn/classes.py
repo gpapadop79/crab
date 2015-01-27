@@ -706,3 +706,132 @@ class UserBasedRecommender(UserRecommender):
                  for ind in sorted_preferences]
 
         return top_n_recs
+
+
+#=====================
+#User Based Recommender combined with Global Baseline Recommender
+#Based on Collaborative Filtering class from Coursera Mining Massive Datasets course, available in the following link
+#https://class.coursera.org/mmds-001/lecture/95
+class UserBasedRecommenderCombinedWithGlobalBaseline(UserBasedRecommender):
+    global_preferences_mean = None
+
+    def _get_global_preferences_mean(self):
+        if self.global_preferences_mean == None:
+            self.global_preferences_mean = np.nanmean(self.model.index)
+        return self.global_preferences_mean
+
+
+    def get_global_baseline_estimate(self, user_id, item_id):
+        '''
+        Parameters
+        ----------
+        user_id: int or string
+                 User for which recommendations are to be computed.
+
+        item_id:  int or string
+            ID of item for which wants to find the estimated preference.
+
+        Returns
+        -------
+        Return an estimated preference based on Global Baseline strategy
+        where user average preference and item average preference are 
+        combined with the global preference average to preferences_from_user
+        an estimate for user-item preference
+        '''
+        #print "GB for user",user_id," / item",item_id
+        global_mean = self._get_global_preferences_mean()
+        #print "global_mean:",global_mean
+        user_preferences = self.model.preferences_from_user(user_id, order_by_id=False)
+        #print "user_preferences:",user_preferences
+        item_preferences = self.model.preferences_for_item(item_id, order_by_id=False)
+        #print "item_preferences:",item_preferences
+        user_preferences_mean = sum(map(lambda i: i[1], user_preferences)) / float(len(user_preferences))
+        #print "user_preferences_mean:",user_preferences_mean
+        item_preferences_mean = sum(map(lambda i: i[1], item_preferences)) / float(len(item_preferences))
+        #print "item_preferences_mean:",item_preferences_mean
+
+        baseline_estimate = global_mean + (user_preferences_mean - global_mean) + (item_preferences_mean - global_mean)
+        #print "baseline_estimate",baseline_estimate
+
+        return baseline_estimate
+
+
+    def estimate_preference(self, user_id, item_id, **params):
+        '''
+        Parameters
+        ----------
+        user_id: int or string
+                 User for which recommendations are to be computed.
+
+        item_id:  int or string
+            ID of item for which wants to find the estimated preference.
+
+        Returns
+        -------
+        Return an estimated preference of Collaborative Filtering combined
+        with the Global Baseline preference estimate for the user and item.
+        This hybrid method allows to deal better with user or item cold start problem
+        '''
+
+        preference = self.model.preference_value(user_id, item_id)
+        if not np.isnan(preference):
+            return preference
+
+        n_similarity = params.pop('n_similarity', 'user_similarity')
+        distance = params.pop('distance', self.similarity.distance)
+        nhood_size = params.pop('nhood_size', None)
+
+        nearest_neighbors = self.neighborhood_strategy.user_neighborhood(user_id,
+                self.model, n_similarity, distance, nhood_size, **params)
+
+        preference = 0.0
+        total_similarity = 0.0        
+
+        similarities = np.array([self.similarity.get_similarity(user_id, to_user_id)
+                for to_user_id in nearest_neighbors]).flatten()
+
+        prefs = np.array([self.model.preference_value(to_user_id, item_id)
+                 for to_user_id in nearest_neighbors])
+
+        prefs_baseline = np.array([self.get_global_baseline_estimate(to_user_id, item_id)
+                 for to_user_id in nearest_neighbors])        
+
+        prefs = prefs[~np.isnan(prefs)]
+        similarities = similarities[~np.isnan(prefs)]        
+
+        #prefs_sim = np.sum(prefs[~np.isnan(similarities)] *
+        #                     similarities[~np.isnan(similarities)])
+
+        prefs_sim_gb = np.sum((prefs[~np.isnan(similarities)] - prefs_baseline[~np.isnan(similarities)]) *
+                             similarities[~np.isnan(similarities)])
+
+        total_similarity = np.sum(similarities)
+
+        #Throw out the estimate if it was based on no data points,
+        #of course, but also if based on just one. This is a bit
+        #of a band-aid on the 'stock' item-based algorithm for
+        #the moment. The reason is that in this case the estimate
+        #is, simply, the user's rating for one item that happened
+        #to have a defined similarity. The similarity score doesn't
+        #matter, and that seems like a bad situation.
+        if total_similarity == 0.0 or \
+           not similarities[~np.isnan(similarities)].size:
+            return np.nan
+
+        #estimated = prefs_sim / total_similarity
+
+        baseline = self.get_global_baseline_estimate(user_id, item_id)
+        estimated_with_gb = baseline + (prefs_sim_gb / total_similarity)
+
+        #print "\nEstimating Preference - User",user_id," - Item",item_id
+        #print "CF:",estimated," CF+Baseline:",estimated_with_gb," Baseline:",baseline
+        #print "SIMILARITIES"
+        #pprint(zip(nearest_neighbors, similarities, prefs, prefs_baseline))
+
+        if self.capper:
+            max_p = self.model.maximum_preference_value()
+            min_p = self.model.minimum_preference_value()
+            estimated_with_gb = max_p if estimated_with_gb > max_p else min_p \
+                     if estimated_with_gb < min_p else estimated_with_gb
+
+        return estimated_with_gb
