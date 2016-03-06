@@ -4,8 +4,10 @@
   mendation algorithms in the world of scientiﬁc Python packages (numpy, scipy, matplotlib). The engine aims
   to provide a rich set of components from which you can construct a customized recommender system from a
   set of algorithms.
+  
+  This is an experimental fork (started in March 2016) that attempts to merge a number of fixes done over the past 2 years in order to get a working recommender library.
 
-  In this fork, I (gabrielspmoreira) have done the following changes:
+  In the code merged into this fork, @gabrielspmoreira did the following changes:
   * Fixed some issues for compatibility with scikit.learn last version (BaseEstimator class deprecated import (scikits.learn.base) and _set_param renamed method)
   * Implemented a hybrid method to combine Collaborative Filtering with Global Baseline estimates (based on users and items average preference), inspired on [Implementing Collaborative Filtering class](https://class.coursera.org/mmds-001/lecture/95) from [Coursera Mining Massive Datasets course](https://www.coursera.org/course/mmds).
 

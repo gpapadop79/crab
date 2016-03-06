@@ -1,10 +1,10 @@
 import numpy as np
 from numpy.testing import assert_array_equal
 from nose.tools import assert_equals, assert_almost_equals
-from ...knn.item_strategies import AllPossibleItemsStrategy, ItemsNeighborhoodStrategy
-from ....models.classes import  MatrixPreferenceDataModel, \
+from scikits.crab.recommenders.knn.item_strategies import AllPossibleItemsStrategy, ItemsNeighborhoodStrategy
+from scikits.crab.models.classes import  MatrixPreferenceDataModel, \
      MatrixBooleanPrefDataModel
-from ..classes import MatrixFactorBasedRecommender
+from scikits.crab.recommenders.svd.classes import MatrixFactorBasedRecommender
 
 
 movies = {'Marcel Caraciolo': {'Lady in the Water': 2.5, 'Snakes on a Plane': 3.5,
@@ -211,14 +211,14 @@ def test_recommend_MatrixFactorBasedRecommender():
         items_selection_strategy=items_strategy,
         n_features=2)
     assert_array_equal(np.array(['Just My Luck', 'You, Me and Dupree']), \
-    recsys.recommend('Leopoldo Pires'))
+    np.sort(recsys.recommend('Leopoldo Pires')))
 
     #Semi Recommendation
     recsys = MatrixFactorBasedRecommender(
         model=boolean_matrix_model,
         items_selection_strategy=items_strategy,
         n_features=2)
-    assert_array_equal(np.array(['You, Me and Dupree']), \
+    assert_array_equal(np.array(['Just My Luck']), \
         recsys.recommend('Leopoldo Pires', 1))
 
     #Empty Recommendation

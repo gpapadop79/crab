@@ -14,9 +14,9 @@ can be subclassed).
 #
 # License: BSD Style.
 
-from base import ItemRecommender, UserRecommender
-from item_strategies import ItemsNeighborhoodStrategy
-from neighborhood_strategies import NearestNeighborsStrategy
+from scikits.crab.recommenders.knn.base import ItemRecommender, UserRecommender
+from scikits.crab.recommenders.knn.item_strategies import ItemsNeighborhoodStrategy
+from scikits.crab.recommenders.knn.neighborhood_strategies import NearestNeighborsStrategy
 import numpy as np
 
 
@@ -589,7 +589,7 @@ class UserBasedRecommender(UserRecommender):
         return np.array([to_user_id for to_user_id, pref in similarities \
             if user_id != to_user_id and not np.isnan(pref)])
 
-    def recommend(self, user_id, how_many=None, **params):
+    def recommend_estimate_strategy(self, user_id, how_many=None, **params):
         '''
         Return a list of recommended items, ordered from most strongly
         recommend to least.
@@ -603,11 +603,7 @@ class UserBasedRecommender(UserRecommender):
 
         '''
 
-<<<<<<< HEAD
         self.set_params(**params)
-=======
-        # self._set_params(**params)
->>>>>>> d8bd1847bd1dc614be84f2180af2e45922d0426b
 
         candidate_items = self.all_other_items(user_id, **params)
 
@@ -615,6 +611,61 @@ class UserBasedRecommender(UserRecommender):
                  candidate_items, how_many)
 
         return recommendable_items
+    
+    def recommend(self, user_id, how_many=None, **params):
+        '''
+        Return a list of recommended items, ordered from most strongly
+        recommend to least.
+
+        Parameters
+        ----------
+        user_id: int or string
+                 User for which recommendations are to be computed.
+        how_many: int
+                 Desired number of recommendations (default=None ALL)
+
+        '''
+        
+        ''' Notes about the implementation:
+        
+        Iterating through the items and estimating 
+        the preference for each items is generally
+        not the best performant strategy
+        for top-n recommendations.
+        
+        Iterating through the neighbors, and updating a
+        score for each item present in the neighborhood
+        is a much faster strategy and returns the same results.
+        '''
+
+        n_similarity = params.pop('n_similarity', 'user_similarity')
+        distance = params.pop('distance', self.similarity.distance)
+        nhood_size = params.pop('nhood_size', None)
+        
+        nearest_neighbors = self.neighborhood_strategy.user_neighborhood(user_id,
+                self.model, n_similarity, distance, nhood_size, **params)
+
+        scores = dict()
+        
+        for neighbor_id in nearest_neighbors:
+            
+            neighbor_similarity = self.similarity.get_similarity(user_id, neighbor_id)[0][0]
+            preferences_from_user = self.model.preferences_from_user(neighbor_id)
+            try:
+                for (item_id, value) in preferences_from_user:
+
+                    if np.isnan(self.model.preference_value(user_id, item_id)):
+
+                        # update item score
+                        (score, total) = scores.get(item_id, (0.,0.))
+                        score += neighbor_similarity * value
+                        total += neighbor_similarity
+                        scores[item_id] = (score, total)
+            except:
+                print(preferences_from_user)
+        
+        items = [(item_id, score/total) for item_id, (score, total) in scores.items() if ~np.isnan(score)]
+        return [item[0] for item in sorted(items, key=lambda x:(x[1], x[0]), reverse=True)][0:how_many]
 
     def _top_matches(self, source_id, target_ids, how_many=None, **params):
         '''

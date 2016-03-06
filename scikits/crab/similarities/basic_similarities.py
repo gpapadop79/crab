@@ -9,8 +9,8 @@ a collection of vectors.
 
 
 import numpy as np
-from base import BaseSimilarity
-from ..metrics.pairwise import loglikehood_coefficient
+from scikits.crab.similarities.base import BaseSimilarity
+from scikits.crab.metrics.pairwise import loglikehood_coefficient
 
 
 def find_common_elements(source_preferences, target_preferences):
@@ -87,7 +87,7 @@ class UserSimilarity(BaseSimilarity):
     'Maria Gabriela': {}}
     >>> model = MatrixPreferenceDataModel(movies)
     >>> similarity = UserSimilarity(model, cosine_distances, 3)
-    >>> similarity['Marcel Caraciolo']
+    >>> similarity['Marcel Caraciolo'] #doctest: +NORMALIZE_WHITESPACE
     [('Marcel Caraciolo', 1.0), ('Sheldom', 0.99127582693458016),
       ('Lorena Abreu', 0.98658676452792504)]
 
@@ -234,7 +234,7 @@ class ItemSimilarity(BaseSimilarity):
     'Maria Gabriela': {}}
     >>> model = MatrixPreferenceDataModel(movies)
     >>> similarity = ItemSimilarity(model, cosine_distances, 3)
-    >>> similarity['The Night Listener']
+    >>> similarity['The Night Listener'] #doctest: +NORMALIZE_WHITESPACE
     [('The Night Listener', 1.0), ('Lady in the Water', 0.98188311415053031),
         ('Just My Luck', 0.97489347126452108)]
 

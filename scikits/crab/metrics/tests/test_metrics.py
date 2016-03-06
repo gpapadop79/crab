@@ -1,6 +1,6 @@
 import numpy as np
 from nose.tools import assert_equals, assert_almost_equals
-from ..metrics import root_mean_square_error, mean_absolute_error,\
+from scikits.crab.metrics.metrics import root_mean_square_error, mean_absolute_error,\
                         normalized_mean_absolute_error, precision_recall_fscore, \
                         precision_score, recall_score, f1_score, evaluation_report,\
                         evaluation_error

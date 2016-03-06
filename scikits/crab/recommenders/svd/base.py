@@ -14,7 +14,7 @@ can be subclassed).
 #
 # License: BSD Style.
 
-from ..base import MemoryBasedRecommender
+from scikits.crab.recommenders.base import MemoryBasedRecommender
 
 #===========================
 #Matrix Factorization Recommender Interface

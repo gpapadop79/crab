@@ -11,10 +11,10 @@ implement your own strategy.
 #
 # License: BSD Style.
 
-from base import BaseUserNeighborhoodStrategy
+from scikits.crab.recommenders.knn.base import BaseUserNeighborhoodStrategy
 import numpy as np
-from ...similarities.basic_similarities import UserSimilarity
-from ...metrics.pairwise import euclidean_distances
+from scikits.crab.similarities.basic_similarities import UserSimilarity
+from scikits.crab.metrics.pairwise import euclidean_distances
 
 
 class AllNeighborsStrategy(BaseUserNeighborhoodStrategy):

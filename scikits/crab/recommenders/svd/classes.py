@@ -15,11 +15,12 @@ can be subclassed).
 # License: BSD Style.
 import random
 
-from base import SVDRecommender
-from ..knn.item_strategies import ItemsNeighborhoodStrategy
+from scikits.crab.recommenders.svd.base import SVDRecommender
+from scikits.crab.recommenders.knn.item_strategies import ItemsNeighborhoodStrategy
 import numpy as np
 from math import sqrt
 import logging
+
 
 logger = logging.getLogger('crab')
 

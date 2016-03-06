@@ -11,7 +11,7 @@ This module contains basic implementations that encapsulate
 # License: BSD Style.
 
 import numpy as np
-from ..utils import check_arrays, unique_labels
+from scikits.crab.utils import check_arrays, unique_labels
 
 
 def root_mean_square_error(y_real, y_pred):

@@ -1,11 +1,11 @@
 from nose.tools import assert_equals, assert_almost_equals, assert_raises, assert_true
-from ...similarities.basic_similarities import UserSimilarity
-from ...metrics.pairwise import  euclidean_distances, jaccard_coefficient
-from ...models.classes import  MatrixPreferenceDataModel, \
+from scikits.crab.similarities.basic_similarities import UserSimilarity
+from scikits.crab.metrics.pairwise import  euclidean_distances, jaccard_coefficient
+from scikits.crab.models.classes import  MatrixPreferenceDataModel, \
      MatrixBooleanPrefDataModel
-from ...recommenders.knn import  UserBasedRecommender
-from ..classes import CfEvaluator
-from ...recommenders.knn.neighborhood_strategies import  NearestNeighborsStrategy
+from scikits.crab.recommenders.knn import  UserBasedRecommender
+from scikits.crab.metrics.classes import CfEvaluator
+from scikits.crab.recommenders.knn.neighborhood_strategies import  NearestNeighborsStrategy
 
 
 movies = {'Marcel Caraciolo': {'Lady in the Water': 2.5, 'Snakes on a Plane': 3.5,

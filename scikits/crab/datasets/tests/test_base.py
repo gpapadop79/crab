@@ -1,9 +1,9 @@
 from os.path import join
 from os.path import dirname
 from nose.tools import assert_equal, assert_raises
-from ..base import load_movielens_r100k, load_sample_songs, load_sample_movies
-from ..book_crossing import load_bookcrossings
-from ...utils.testing import assert_in
+from scikits.crab.datasets.base import load_movielens_r100k, load_sample_songs, load_sample_movies
+from scikits.crab.datasets.book_crossing import load_bookcrossings
+from scikits.crab.utils.testing import assert_in
 
 
 def test_movielens_r100k():

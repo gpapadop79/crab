@@ -1,5 +1,5 @@
 import numpy as np
-from ..cross_validation import LeaveOneOut, LeavePOut, KFold, ShuffleSplit
+from scikits.crab.metrics.cross_validation import LeaveOneOut, LeavePOut, KFold
 from numpy.testing import assert_array_equal
 
 

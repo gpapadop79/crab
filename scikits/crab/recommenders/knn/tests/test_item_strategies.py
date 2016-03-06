@@ -1,9 +1,9 @@
 import numpy as np
 from numpy.testing import assert_array_equal
 from nose.tools import assert_raises
-from ....models.classes import  MatrixPreferenceDataModel
-from ..item_strategies import ItemsNeighborhoodStrategy, AllPossibleItemsStrategy
-from ....models.utils import UserNotFoundError
+from scikits.crab.models.classes import  MatrixPreferenceDataModel
+from scikits.crab.recommenders.knn.item_strategies import ItemsNeighborhoodStrategy, AllPossibleItemsStrategy
+from scikits.crab.models.utils import UserNotFoundError
 
 
 movies = {'Marcel Caraciolo': {'Lady in the Water': 2.5, 'Snakes on a Plane': 3.5,
