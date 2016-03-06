@@ -603,7 +603,11 @@ class UserBasedRecommender(UserRecommender):
 
         '''
 
+<<<<<<< HEAD
         self.set_params(**params)
+=======
+        # self._set_params(**params)
+>>>>>>> d8bd1847bd1dc614be84f2180af2e45922d0426b
 
         candidate_items = self.all_other_items(user_id, **params)
 
