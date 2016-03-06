@@ -105,10 +105,14 @@ class MatrixPreferenceDataModel(BaseDataModel):
              Build the data model
         '''
         #Is it important to store as numpy array ?
+        # I don't think so
         self._user_ids = np.asanyarray(self.dataset.keys())
         self._user_ids.sort()
 
         #Is it important to store as numpy array ?
+        #TODO:
+        #    Items are repeated here.
+        #    Use set instead of list-then-unique.
         self._item_ids = []
         for items in self.dataset.itervalues():
             self._item_ids.extend(items.keys())
@@ -128,6 +132,8 @@ class MatrixPreferenceDataModel(BaseDataModel):
                 logger.debug("PROGRESS: at user_id #%i/%i" %  \
                     (userno, self._user_ids.size))
             for itemno, item_id in enumerate(self._item_ids):
+                # It's lucky that you used np.NaN...
+                # One of my data set has {-1, 0, 1} as the values
                 r = self.dataset[user_id].get(item_id, np.NaN) #Is it to be np.NaN or 0 ?!!
                 self.index[userno, itemno] = r
 
@@ -183,15 +189,17 @@ class MatrixPreferenceDataModel(BaseDataModel):
         '''
         preferences = self.preference_values_from_user(user_id)
 
-        #think in a way to return as numpy array and how to remove the nan values efficiently.
-        data = zip(self._item_ids, preferences.flatten())
+        ##think in a way to return as numpy array and how to remove the nan values efficiently.
+        #data = zip(self._item_ids, preferences.flatten())
+        #filtered_data = [(item_id, preference)  for item_id, preference in data if not np.isnan(preference)]
+
+        #filtered_data = [(item_id, self.dataset[user_id][item_id]) for item_id in self._item_ids]
+        filtered_data = self.dataset[user_id].items()
 
         if order_by_id:
-            return [(item_id, preference)  for item_id, preference in data \
-                         if not np.isnan(preference)]
+            return filtered_data
         else:
-            return sorted([(item_id, preference)  for item_id, preference in data \
-                         if not np.isnan(preference)], key=lambda item: - item[1])
+            return sorted(filtered_data, key=lambda item: - item[1])
 
     def has_preference_values(self):
         '''

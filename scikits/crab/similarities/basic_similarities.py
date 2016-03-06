@@ -44,7 +44,7 @@ class UserSimilarity(BaseSimilarity):
          Defines the data model where data is fetched.
     `distance`: Function
          Pairwise Function between two vectors.
-     `num_best`: int
+    `num_best`: int
          If it is left unspecified, similarity queries return a full list (one
          float for every item in the model, including the query item).
 
@@ -95,19 +95,58 @@ class UserSimilarity(BaseSimilarity):
 
     def __init__(self, model, distance, num_best=None):
         BaseSimilarity.__init__(self, model, distance, num_best)
+        self.cache_similarity = {}
 
     def get_similarity(self, source_id, target_id):
-        source_preferences = self.model.preferences_from_user(source_id)
-        target_preferences = self.model.preferences_from_user(target_id)
+        #TODO:
+        #    Repeated evaluation of a pair.
+        #    Can make a cache to save some computation.
 
+        #if source_id < target_id:
+        #    t = (source_id, target_id)
+        #else:
+        #    t = (target_id, source_id)
+
+        t = (source_id, target_id)
+        if t in self.cache_similarity:
+            return self.cache_similarity[t]
+
+        # == True: meaning that the model is not a Boolean matrix
         if self.model.has_preference_values():
-            source_preferences, target_preferences = \
-                find_common_elements(source_preferences, target_preferences)
+            #source_preferences, target_preferences = \
+            #    find_common_elements(source_preferences, target_preferences)
+            # find_common_elements returns values without keys
+            d_source_preferences = self.model.dataset[source_id]
+            d_target_preferences = self.model.dataset[target_id]
+            intersection = set(d_source_preferences.keys()) & set(d_target_preferences.keys())
+
+            # Array from generator
+            # (Best of the three)
+            source_preferences = np.fromiter((d_source_preferences[key] for key in intersection), int, len(intersection))
+            target_preferences = np.fromiter((d_target_preferences[key] for key in intersection), int, len(intersection))
+
+            # List comprehension
+            #source_preferences = np.array([d_source_preferences[key] for key in intersection])
+            #target_preferences = np.array([d_target_preferences[key] for key in intersection])
+
+            # Manual space allocation and look up
+            #source_preferences = np.zeros(len(intersection))
+            #target_preferences = np.zeros(len(intersection))
+            #for (i, key) in enumerate(intersection):
+            #    source_preferences[i] = d_source_preferences[key]
+            #    target_preferences[i] = d_target_preferences[key]
+        else:
+            source_preferences = self.model.preferences_from_user(source_id)
+            target_preferences = self.model.preferences_from_user(target_id)
 
         if source_preferences.ndim == 1 and target_preferences.ndim == 1:
             source_preferences = np.asarray([source_preferences])
             target_preferences = np.asarray([target_preferences])
 
+        #TODO:
+        #    Special case?
+        #    The Similarity class should accept `model` as the parameter
+        #    so that they can adjust to this situation.
         if self.distance == loglikehood_coefficient:
             return self.distance(self.model.items_count(), \
                 source_preferences, target_preferences) \
@@ -115,11 +154,15 @@ class UserSimilarity(BaseSimilarity):
                 not target_preferences.shape[1] == 0 else np.array([[np.nan]])
 
         #evaluate the similarity between the two users vectors.
-        return self.distance(source_preferences, target_preferences) \
+        d = self.distance(source_preferences, target_preferences) \
             if not source_preferences.shape[1] == 0 \
                 and not target_preferences.shape[1] == 0 else np.array([[np.nan]])
+        self.cache_similarity[t] = d
+        return d
 
     def get_similarities(self, source_id):
+        #TODO:
+        #    cache
         return[(other_id, self.get_similarity(source_id, other_id))  for other_id, v in self.model]
 
     def __iter__(self):
