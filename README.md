@@ -1,8 +1,8 @@
 # Crab - A Recommendation Engine library for Python
 
-  Crab is a ﬂexible, fast recommender engine for Python that integrates classic information ﬁltering recom- 
-  mendation algorithms in the world of scientiﬁc Python packages (numpy, scipy, matplotlib). The engine aims 
-  to provide a rich set of components from which you can construct a customized recommender system from a 
+  Crab is a ﬂexible, fast recommender engine for Python that integrates classic information ﬁltering recom-
+  mendation algorithms in the world of scientiﬁc Python packages (numpy, scipy, matplotlib). The engine aims
+  to provide a rich set of components from which you can construct a customized recommender system from a
   set of algorithms.
 
   In this fork, I (gabrielspmoreira) have done the following changes:
@@ -11,10 +11,29 @@
 
 ## Usage
 
-  For Usage and Instructions checkout the [Crab Wiki](https://github.com/muricoca/crab/wiki)
+```python
+from scikits.crab import datasets
+movies = datasets.load_sample_movies()
+songs = datasets.load_sample_songs()
+
+from scikits.crab.models import MatrixPreferenceDataModel
+model = MatrixPreferenceDataModel(movies.data)
+
+from scikits.crab.metrics import pearson_correlation
+from scikits.crab.similarities import UserSimilarity
+similarity = UserSimilarity(model, pearson_correlation)
+
+from scikits.crab.recommenders.knn import UserBasedRecommender
+
+recommender = UserBasedRecommender(model, similarity, with_preference=True)
+
+recommender.recommend(5)
+```
+
+  For further usage and Instructions checkout the [Crab Wiki](https://github.com/muricoca/crab/wiki)
 
 ## History
-  
+
   The project was started in 2010  by Marcel Caraciolo as a M.S.C related  project, and since then many people interested joined to help in the project.
   It is currently maintained by a team of volunteers, members of the Muriçoca Labs.
 
@@ -23,9 +42,9 @@
   Marcel Caraciolo (marcel@muricoca.com)
 
   Bruno Melo (bruno@muricoca.com)
-  
+
   Ricardo Caspirro (ricardo@muricoca.com)
-  
+
   Rodrigo Alves (rodrigo@muricoca.com)
 
 ## Bugs, Feedback
@@ -35,7 +54,7 @@
 ## Contributions
 
   If you want to submit a patch to this project, it is AWESOME. Follow this guide:
-  
+
   * Fork Crab
   * Make your alterations and commit
   * Create a topic branch - git checkout -b my_branch
