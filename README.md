@@ -1,3 +1,74 @@
+# Crab - A Recommendation Engine library for Python
+
+  Crab is a ﬂexible, fast recommender engine for Python that integrates classic information ﬁltering recom-
+  mendation algorithms in the world of scientiﬁc Python packages (numpy, scipy, matplotlib). The engine aims
+  to provide a rich set of components from which you can construct a customized recommender system from a
+  set of algorithms.
+
+  In this fork, I (gabrielspmoreira) have done the following changes:
+  * Fixed some issues for compatibility with scikit.learn last version (BaseEstimator class deprecated import (scikits.learn.base) and _set_param renamed method)
+  * Implemented a hybrid method to combine Collaborative Filtering with Global Baseline estimates (based on users and items average preference), inspired on [Implementing Collaborative Filtering class](https://class.coursera.org/mmds-001/lecture/95) from [Coursera Mining Massive Datasets course](https://www.coursera.org/course/mmds).
+
+## Usage
+
+```python
+from scikits.crab import datasets
+movies = datasets.load_sample_movies()
+songs = datasets.load_sample_songs()
+
+from scikits.crab.models import MatrixPreferenceDataModel
+model = MatrixPreferenceDataModel(movies.data)
+
+from scikits.crab.metrics import pearson_correlation
+from scikits.crab.similarities import UserSimilarity
+similarity = UserSimilarity(model, pearson_correlation)
+
+from scikits.crab.recommenders.knn import UserBasedRecommender
+
+recommender = UserBasedRecommender(model, similarity, with_preference=True)
+
+recommender.recommend(5)
+```
+
+  For further usage and Instructions checkout the [Crab Wiki](https://github.com/muricoca/crab/wiki)
+
+## History
+
+  The project was started in 2010  by Marcel Caraciolo as a M.S.C related  project, and since then many people interested joined to help in the project.
+  It is currently maintained by a team of volunteers, members of the Muriçoca Labs.
+
+## Original Authors
+  
+  Marcel Caraciolo (marcel@muricoca.com)
+
+  Bruno Melo (bruno@muricoca.com)
+
+  Ricardo Caspirro (ricardo@muricoca.com)
+
+  Rodrigo Alves (rodrigo@muricoca.com)
+
+## Bugs, Feedback
+
+  Please submit bugs you might encounter, as well Patches and Features Requests to the [Issues Tracker](https://github.com/muricoca/crab/issues) located at GitHub.
+
+## Contributions
+
+  If you want to submit a patch to this project, it is AWESOME. Follow this guide:
+
+  * Fork Crab
+  * Make your alterations and commit
+  * Create a topic branch - git checkout -b my_branch
+  * Push to your branch - git push origin my_branch
+  * Create a [Pull Request](http://help.github.com/pull-requests/) from your branch.
+  * You just contributed to the Crab project!
+
+## Wiki
+
+Please check our [Wiki](https://github.com/muricoca/crab/wiki "Crab Wiki") wiki, for further information on how to start developing or use Crab in your projects.
+
+
+## Benchmarking notes from @hupili:
+
 I was preparing a [tutorial about RecSys](https://course.ie.cuhk.edu.hk/~engg4030/tutorial/tutorial9/).
 After some search, it seems that `crab` is the most commonly used.
 When running it on my data set (LegCoHK), the prediction of neighbourhood model is extremely slow.
@@ -88,76 +159,6 @@ Tune common elements lookup:
      5845    0.286    0.000    0.930    0.000 distance.py:1712(cdist)
      6901    0.182    0.000    0.195    0.000 classes.py:162(preference_values_from_user)
 ```
-
----------
-
-# Crab - A Recommendation Engine library for Python
-
-  Crab is a ﬂexible, fast recommender engine for Python that integrates classic information ﬁltering recom-
-  mendation algorithms in the world of scientiﬁc Python packages (numpy, scipy, matplotlib). The engine aims
-  to provide a rich set of components from which you can construct a customized recommender system from a
-  set of algorithms.
-
-  In this fork, I (gabrielspmoreira) have done the following changes:
-  * Fixed some issues for compatibility with scikit.learn last version (BaseEstimator class deprecated import (scikits.learn.base) and _set_param renamed method)
-  * Implemented a hybrid method to combine Collaborative Filtering with Global Baseline estimates (based on users and items average preference), inspired on [Implementing Collaborative Filtering class](https://class.coursera.org/mmds-001/lecture/95) from [Coursera Mining Massive Datasets course](https://www.coursera.org/course/mmds).
-
-## Usage
-
-```python
-from scikits.crab import datasets
-movies = datasets.load_sample_movies()
-songs = datasets.load_sample_songs()
-
-from scikits.crab.models import MatrixPreferenceDataModel
-model = MatrixPreferenceDataModel(movies.data)
-
-from scikits.crab.metrics import pearson_correlation
-from scikits.crab.similarities import UserSimilarity
-similarity = UserSimilarity(model, pearson_correlation)
-
-from scikits.crab.recommenders.knn import UserBasedRecommender
-
-recommender = UserBasedRecommender(model, similarity, with_preference=True)
-
-recommender.recommend(5)
-```
-
-  For further usage and Instructions checkout the [Crab Wiki](https://github.com/muricoca/crab/wiki)
-
-## History
-
-  The project was started in 2010  by Marcel Caraciolo as a M.S.C related  project, and since then many people interested joined to help in the project.
-  It is currently maintained by a team of volunteers, members of the Muriçoca Labs.
-
-## Original Authors
-  
-  Marcel Caraciolo (marcel@muricoca.com)
-
-  Bruno Melo (bruno@muricoca.com)
-
-  Ricardo Caspirro (ricardo@muricoca.com)
-
-  Rodrigo Alves (rodrigo@muricoca.com)
-
-## Bugs, Feedback
-
-  Please submit bugs you might encounter, as well Patches and Features Requests to the [Issues Tracker](https://github.com/muricoca/crab/issues) located at GitHub.
-
-## Contributions
-
-  If you want to submit a patch to this project, it is AWESOME. Follow this guide:
-
-  * Fork Crab
-  * Make your alterations and commit
-  * Create a topic branch - git checkout -b my_branch
-  * Push to your branch - git push origin my_branch
-  * Create a [Pull Request](http://help.github.com/pull-requests/) from your branch.
-  * You just contributed to the Crab project!
-
-## Wiki
-
-Please check our [Wiki](https://github.com/muricoca/crab/wiki "Crab Wiki") wiki, for further information on how to start developing or use Crab in your projects.
 
 ## LICENCE (BSD)
 
